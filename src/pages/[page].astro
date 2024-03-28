@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogpostPreview from '../components/BlogpostPreview.astro';
+
+interface Props {
+  post: any,
+  page: any,
+}
+
+const data = await fetch('http://localhost:3000/api/blogpost-list').then((response) => response.json())
+
+export async function getStaticPaths({ paginate }) {
+  const data = await fetch('http://localhost:3000/api/blogpost-list').then((response) => response.json())
+
+  const processed = data.map((post) => {
+    return {
+      params: { blogpostid: post._id },
+      props: { post },
+    }
+  })
+  return paginate(processed, {pageSize : 2})
+}
+
+const { blogpostid } = Astro.params;
+const { page } = Astro.props;
+---
+
+<Layout title="blogpost">
+  <p>{blogpostid}</p>
+  <p>{JSON.stringify(page.data)}</p>
+  <a href={page.url.next}>{page.url.next}</a>
+  <!-- <p>{post.title}</p>
+  <p>{post.author.username}</p>
+  <p>{post.content}</p> -->
+  <!-- <form>
+    <input type="text" id="title" name="title" value={post.title}>
+  </form>
+  {data.map((e) => <li><a href={e.content}>{e.content}</a></li>)} -->
+  {page.data.map((e) => <BlogpostPreview id={e.props.post._id} title={e.props.post.title} content={e.props.post.content} timestamp={e.props.post.timestamp} author={e.props.post.author}></BlogpostPreview>)}
+</Layout>
+
+<style>
+</style>
+
+<script>
+</script>

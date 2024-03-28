@@ -1,0 +1,29 @@
+---
+interface Props {
+	id: string;
+	title: string;
+	content: string;
+  timestamp: Date;
+  author: string;
+  editedTimestamp?: any;
+}
+
+const { id, title, content, timestamp, author, editedTimestamp = false } = Astro.props;
+---
+
+<article class="blogpost-preview">
+  <div>
+    <h2>{title}</h2>
+    <time datetime={timestamp.toString()}>Posted: {timestamp.toString()}</time>
+    <address>Author: {author}</address>
+    {editedTimestamp && <time datetime={editedTimestamp.toString()}>Last edited: {editedTimestamp.toString()}</time>}
+  </div>
+  <p>{content}</p>
+	<a href={`/posts/${id}`}>View full post</a>
+</article>
+<style>
+
+</style>
+<script>
+  console.log()
+</script>

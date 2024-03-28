@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+interface Props {
+  post: any
+}
+
+const data = await fetch('http://localhost:3000/api/blogpost-list').then((response) => response.json())
+console.log(data)
+
+export async function getStaticPaths({ paginate }) {
+  const data = await fetch('http://localhost:3000/api/blogpost-list').then((response) => response.json())
+
+  return data.map((post) => {
+    return {
+      params: { blogpostid: post._id },
+      props: { post },
+    }
+  })
+}
+
+const { blogpostid } = Astro.params;
+const { post } = Astro.props;
+---
+
+<Layout title="blogpost">
+  <p>{blogpostid}</p>
+  <p>{JSON.stringify(post)}</p>
+  <p>{post.title}</p>
+  <p>{post.author}</p>
+  <p>{post.content}</p>
+  <form>
+    <input type="text" id="title" name="title" value={post.title}>
+  </form>
+  {data.map((e) => <li><a href={e.content}>{e.content}</a></li>)}
+</Layout>
+
+<style>
+</style>
+
+<script>
+</script>
