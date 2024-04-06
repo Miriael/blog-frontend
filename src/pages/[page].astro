@@ -7,9 +7,6 @@ interface Props {
   page: any,
 }
 
-const data = await fetch('http://localhost:3000/api/blogpost-list').then((response) => response.json())
-
-
 export async function getStaticPaths({ paginate }) {
   const data = await fetch('http://localhost:3000/api/blogpost-list').then((response) => response.json())
 
@@ -27,18 +24,17 @@ const { page } = Astro.props;
 ---
 
 <Layout title="blogpost">
-  <!-- <p>{blogpostid}</p>
-  <p>{JSON.stringify(page.data)}</p> -->
-  <!-- <p>{post.title}</p>
-  <p>{post.author.username}</p>
-  <p>{post.content}</p> -->
-  <!-- <form>
-    <input type="text" id="title" name="title" value={post.title}>
-  </form>
-  {data.map((e) => <li><a href={e.content}>{e.content}</a></li>)} -->
   <h1>Blog Title Placeholder</h1>
   <div class="blogposts-wrapper">
-  {page.data.map((e) => <BlogpostPreview id={e.props.post._id} title={e.props.post.title} content={e.props.post.content} timestamp={e.props.post.timestamp} author={e.props.post.author.username}></BlogpostPreview>)}
+  {page.data.map((e) => 
+    <BlogpostPreview 
+      id={e.props.post._id} 
+      title={e.props.post.title} 
+      content={e.props.post.content} 
+      timestamp={e.props.post.timestamp} 
+      author={e.props.post.author.username} 
+      commentCount={e.props.post.commentCount}>
+    </BlogpostPreview>)}
   </div>
   <nav>
     {page.url.prev &&<a href={page.url.prev}>Previous page</a>}
@@ -50,12 +46,13 @@ const { page } = Astro.props;
   .blogposts-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 3ch;
+    gap: 3rem;
   }
   nav {
     display: flex;
     justify-content: center;
-    margin-bottom: 100px;
+    margin-bottom: 5rem;
+    gap: 5rem;
   }
 </style>
 

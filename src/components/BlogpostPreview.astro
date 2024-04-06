@@ -5,22 +5,29 @@ interface Props {
 	content: string;
   timestamp: Date;
   author: string;
+  commentCount: number;
   editedTimestamp?: any;
 }
 
-const { id, title, content, timestamp, author, editedTimestamp = false } = Astro.props;
+const { id, title, content, timestamp, author, commentCount, editedTimestamp = false } = Astro.props;
+const convertedTimestamp = new Date(timestamp)
+const convertedEditedTimestamp = editedTimestamp ? new Date(editedTimestamp) : false
 ---
 
 <article class="blogpost-preview">
   <h2>{title}</h2>
   <div class="wrapper">
     <address>Author: {author}</address>
-    <time datetime={timestamp.toString()}>Posted: {timestamp.toString()}</time>
-    {editedTimestamp && <time datetime={editedTimestamp.toString()}>Last edited: {editedTimestamp.toString()}</time>}
+    <time datetime={convertedTimestamp.toString()}>Posted: {convertedTimestamp.toString()}</time>
+    {convertedEditedTimestamp && <time datetime={convertedEditedTimestamp.toString()}>Last edited: {convertedEditedTimestamp}</time>}
   </div>
   <p>{content}</p>
-	<a href={`/posts/${id}`}>View full post</a>
+	<a href={`/posts/${id}`}>{commentCount} comments</a>
 </article>
+
+<script>
+
+</script>
 
 <style>
   article {
