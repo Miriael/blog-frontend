@@ -17,9 +17,9 @@ const convertedEditedTimestamp = editedTimestamp ? new Date(editedTimestamp) : f
 <article class="blogpost-preview">
   <h2>{title}</h2>
   <div class="wrapper">
-    <address>Author: {author}</address>
-    <time datetime={convertedTimestamp.toString()}>Posted: {convertedTimestamp.toString()}</time>
-    {convertedEditedTimestamp && <time datetime={convertedEditedTimestamp.toString()}>Last edited: {convertedEditedTimestamp}</time>}
+    <address>{author}</address>
+    <time datetime={convertedTimestamp.toString()}>{convertedTimestamp.toLocaleString()}</time>
+    {convertedEditedTimestamp && <time datetime={convertedEditedTimestamp.toLocaleString()}>Last edited: {convertedEditedTimestamp}</time>}
   </div>
   <p>{content}</p>
 	<a href={`/posts/${id}`}>{commentCount} comments</a>
@@ -40,18 +40,25 @@ const convertedEditedTimestamp = editedTimestamp ? new Date(editedTimestamp) : f
     display: flex;
     flex-direction: column;
     align-items:flex-end;
-    line-height: 1.5em
+    line-height: 2em;
   }
   address {
+    font-size: 1.1rem;
     font-style: normal;
   }
   .wrapper::after{
     content: '';
     height: 1px;
-    width: 40%;
+    width: 20ch;
     border-top: 1px solid black;
   }
   a {
     align-self: flex-end;
+  }
+  time {
+    font-size: 0.9rem;
+  }
+  p {
+    line-height: 2rem;
   }
 </style>

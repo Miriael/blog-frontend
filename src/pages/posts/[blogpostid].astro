@@ -21,18 +21,81 @@ const { blogpostid } = Astro.params;
 const comments = await fetch(`http://localhost:3000/api/comment/${blogpostid}`).then((response) => response.json());
 
 const { post } = Astro.props;
+
+const convertedTimestamp = new Date(post.timestamp);
+const convertedEditedTimestamp = post.editedTimestamp ? new Date(post.editedTimestamp) : false
 ---
 
-<Layout title="blogpost">
-  <p>{post.title}</p>
-  <p>{post.author.username}</p>
-  <p>{post.content}</p>
-  <p>{post.timestamp}</p>
-  <div></div>
-  <div>{comments.map((e) => <p>{e.author}</p> <p>{e.content}</p>)}</div>
+<Layout title=`Blog Title - ${post.title}``>
+  <h1>Blog Title</h1>
+  <article class="blogpost">
+    <header>
+      <h2>{post.title}</h2>
+      <address>{post.author.username}</address>
+      <time datetime={convertedTimestamp.toISOString()}>{convertedTimestamp.toLocaleString()}</time>
+      {convertedEditedTimestamp &&<time datetime={convertedEditedTimestamp.toISOString()}>{convertedEditedTimestamp.toLocaleString()}</time>}
+    </header>
+    <p>{post.content}</p>
+  </article>
+  <section class="comments">
+    <h2>Comments</h2>
+    {comments.map((e) => <article class="comment"><address>{e.author}</address><p>{e.content}</p></article>)}
+  </section>
 </Layout>
 
 <style>
+  body {
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .blogpost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(75dvw, 70ch);
+    margin: 2rem 0 2rem 0;
+    line-height: 2rem;
+  }
+  header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  header::after{
+    align-self: flex-end;
+    content: '';
+    height: 1px;
+    width: 20ch;
+    border-top: 1px solid black;
+  }
+  h2 {
+    align-self: flex-start;
+  }
+  time,
+  address {
+    align-self: flex-end;
+  }
+  time {
+    font-size: 0.9rem;
+  }
+  address {
+    font-size: 1.1rem;
+    font-style: normal;
+  }
+  .comments {
+    width: min(65dvw, 60ch);
+  }
+  .comment {
+    line-height: 1.8rem;
+    text-align: right;
+    margin-bottom: 2rem;
+  }
+  .comment p {
+    margin: 0px;
+  }
 </style>
 
 <script>
